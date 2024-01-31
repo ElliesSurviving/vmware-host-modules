@@ -48,6 +48,6 @@ clean: $(SUBDIRS)
 tarballs: $(TARBALLS)
 
 copytars:
-	@cp /usr/lib/vmware/modules/*/*.tar
+	@cp /usr/lib/vmware/modules/*/*.tar ./
 	tar xpf ./vmmon.tar
 	tar xpf ./vmnet.tar
