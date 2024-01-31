@@ -5,7 +5,7 @@ MODFILES = $(foreach mod,$(MODULES),$(mod)-only/$(mod).ko)
 VM_UNAME = $(shell uname -r)
 MODDIR = /lib/modules/$(VM_UNAME)/misc
 
-MODINFO = /sbin/modinfo
+MODINFO = /bin/modinfo
 DEPMOD = /sbin/depmod
 
 %.tar: FORCE gitcleancheck
@@ -31,7 +31,7 @@ gitcleancheck: gitcheck
 retiredcheck:
 	@test -f RETIRED && cat RETIRED || true
 
-install: retiredcheck $(MODFILES)
+install: copytars retiredcheck $(MODFILES)
 	@for f in $(MODFILES); do \
 	    mver=$$($(MODINFO) -F vermagic $$f);\
 	    mver=$${mver%% *};\
@@ -47,3 +47,7 @@ clean: $(SUBDIRS)
 
 tarballs: $(TARBALLS)
 
+copytars:
+	@cp /usr/lib/vmware/modules/*/*.tar
+	tar xpf ./vmmon.tar
+	tar xpf ./vmnet.tar
